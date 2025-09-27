@@ -25,6 +25,13 @@
             --text-primary: #ffffff;
             --text-secondary: rgba(255, 255, 255, 0.8);
             --text-muted: rgba(255, 255, 255, 0.6);
+            
+            /* Dynamic background gradients */
+            --bg-gradient-1: #667eea;
+            --bg-gradient-2: #764ba2;
+            --bg-gradient-3: #f093fb;
+            --bg-gradient-4: #f5576c;
+            --bg-gradient-5: #4facfe;
         }
 
         * {
@@ -35,13 +42,14 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+            background: linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 25%, var(--bg-gradient-3) 50%, var(--bg-gradient-4) 75%, var(--bg-gradient-5) 100%);
             background-size: 400% 400%;
             animation: gradientShift 15s ease infinite;
             color: var(--text-primary);
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
+            transition: all 0.8s ease;
         }
 
         @keyframes gradientShift {
@@ -844,6 +852,216 @@
             background: linear-gradient(135deg, #5ba3fe 0%, #20f4fe 100%);
         }
 
+        /* Color Palette Selector */
+        .color-palette-btn {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            width: 55px;
+            height: 55px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+        }
+
+        .color-palette-btn:hover {
+            transform: scale(1.1) rotate(15deg);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 12px 40px rgba(31, 38, 135, 0.5);
+        }
+
+        .color-palette-btn i {
+            font-size: 24px;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .color-palette-btn:hover i {
+            transform: rotate(-15deg);
+        }
+
+        /* Color Palette Menu */
+        .color-palette-menu {
+            position: fixed;
+            top: 90px;
+            right: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 20px;
+            min-width: 280px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            opacity: 0;
+            transform: translateY(-20px) scale(0.9);
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 999;
+        }
+
+        .color-palette-menu.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+        }
+
+        .color-palette-menu::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            right: 30px;
+            width: 16px;
+            height: 16px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: none;
+            border-right: none;
+            transform: rotate(45deg);
+            border-radius: 2px;
+        }
+
+        .palette-title {
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .palette-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .palette-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .palette-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 12px;
+        }
+
+        .palette-option:hover {
+            transform: translateX(5px);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .palette-option:hover::before {
+            opacity: 0.1;
+        }
+
+        .palette-option.active {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateX(8px);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+        }
+
+        .palette-preview {
+            display: flex;
+            gap: 3px;
+            flex-shrink: 0;
+        }
+
+        .color-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .palette-name {
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .palette-description {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-top: 2px;
+        }
+
+        /* Backdrop overlay */
+        .palette-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(2px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 998;
+        }
+
+        .palette-backdrop.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* Mobile responsiveness for color selector */
+        @media (max-width: 768px) {
+            .color-palette-btn {
+                top: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+            }
+
+            .color-palette-btn i {
+                font-size: 20px;
+            }
+
+            .color-palette-menu {
+                top: 80px;
+                right: 20px;
+                left: 20px;
+                min-width: auto;
+            }
+
+            .palette-option {
+                padding: 15px 12px;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -858,12 +1076,105 @@
     <!-- Floating Particles -->
     <div class="particles-container" id="particlesContainer"></div>
 
+    <!-- Color Palette Selector -->
+    <button class="color-palette-btn" id="colorPaletteBtn" onclick="toggleColorPalette()">
+        <i class="bi bi-brush"></i>
+    </button>
+
+    <!-- Color Palette Menu -->
+    <div class="palette-backdrop" id="paletteBackdrop" onclick="closeColorPalette()"></div>
+    <div class="color-palette-menu" id="colorPaletteMenu">
+        <div class="palette-title">
+            <i class="bi bi-palette"></i>
+            Choose Your Style
+        </div>
+        <div class="palette-grid">
+            <div class="palette-option active" data-theme="aurora" onclick="changeTheme('aurora')">
+                <div class="palette-preview">
+                    <div class="color-dot" style="background: #667eea;"></div>
+                    <div class="color-dot" style="background: #764ba2;"></div>
+                    <div class="color-dot" style="background: #f093fb;"></div>
+                    <div class="color-dot" style="background: #f5576c;"></div>
+                </div>
+                <div>
+                    <div class="palette-name">Aurora Dreams</div>
+                    <div class="palette-description">Purple & pink cosmic vibes</div>
+                </div>
+            </div>
+            
+            <div class="palette-option" data-theme="ocean" onclick="changeTheme('ocean')">
+                <div class="palette-preview">
+                    <div class="color-dot" style="background: #4facfe;"></div>
+                    <div class="color-dot" style="background: #00f2fe;"></div>
+                    <div class="color-dot" style="background: #43e97b;"></div>
+                    <div class="color-dot" style="background: #38f9d7;"></div>
+                </div>
+                <div>
+                    <div class="palette-name">Ocean Breeze</div>
+                    <div class="palette-description">Cool blues & aqua tones</div>
+                </div>
+            </div>
+            
+            <div class="palette-option" data-theme="sunset" onclick="changeTheme('sunset')">
+                <div class="palette-preview">
+                    <div class="color-dot" style="background: #fa709a;"></div>
+                    <div class="color-dot" style="background: #fee140;"></div>
+                    <div class="color-dot" style="background: #ff9a9e;"></div>
+                    <div class="color-dot" style="background: #fecfef;"></div>
+                </div>
+                <div>
+                    <div class="palette-name">Sunset Glow</div>
+                    <div class="palette-description">Warm pinks & golden hues</div>
+                </div>
+            </div>
+            
+            <div class="palette-option" data-theme="forest" onclick="changeTheme('forest')">
+                <div class="palette-preview">
+                    <div class="color-dot" style="background: #11998e;"></div>
+                    <div class="color-dot" style="background: #38ef7d;"></div>
+                    <div class="color-dot" style="background: #17ad37;"></div>
+                    <div class="color-dot" style="background: #64b3f4;"></div>
+                </div>
+                <div>
+                    <div class="palette-name">Forest Mist</div>
+                    <div class="palette-description">Nature greens & sky blues</div>
+                </div>
+            </div>
+            
+            <div class="palette-option" data-theme="galaxy" onclick="changeTheme('galaxy')">
+                <div class="palette-preview">
+                    <div class="color-dot" style="background: #2c3e50;"></div>
+                    <div class="color-dot" style="background: #fd746c;"></div>
+                    <div class="color-dot" style="background: #ff9068;"></div>
+                    <div class="color-dot" style="background: #667eea;"></div>
+                </div>
+                <div>
+                    <div class="palette-name">Galaxy Night</div>
+                    <div class="palette-description">Deep space & stellar colors</div>
+                </div>
+            </div>
+            
+            <div class="palette-option" data-theme="neon" onclick="changeTheme('neon')">
+                <div class="palette-preview">
+                    <div class="color-dot" style="background: #ff006e;"></div>
+                    <div class="color-dot" style="background: #fb5607;"></div>
+                    <div class="color-dot" style="background: #ffbe0b;"></div>
+                    <div class="color-dot" style="background: #8338ec;"></div>
+                </div>
+                <div>
+                    <div class="palette-name">Neon Nights</div>
+                    <div class="palette-description">Electric & vibrant colors</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="main-container">
         <div class="glass-card">
             <!-- Header Section -->
             <div class="header-section">
                 <h1 class="main-title">Key Checker</h1>
-                <p class="subtitle">Devious Solver Key-Checker. Made by zjke.</p>
+                <p class="subtitle">Real-time API verification with modern glassmorphism design</p>
             </div>
 
             <!-- Auto-check Toggle Section -->
@@ -927,6 +1238,40 @@
         const toggleVisibilityBtn = document.getElementById('toggleVisibilityBtn');
         const autoCheckToggle = document.getElementById('autoCheckToggle');
         const intervalInput = document.getElementById('intervalInput');
+        const colorPaletteBtn = document.getElementById('colorPaletteBtn');
+        const colorPaletteMenu = document.getElementById('colorPaletteMenu');
+        const paletteBackdrop = document.getElementById('paletteBackdrop');
+
+        // Color themes data
+        const colorThemes = {
+            aurora: {
+                name: 'Aurora Dreams',
+                colors: ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe']
+            },
+            ocean: {
+                name: 'Ocean Breeze', 
+                colors: ['#4facfe', '#00f2fe', '#43e97b', '#38f9d7', '#4facfe']
+            },
+            sunset: {
+                name: 'Sunset Glow',
+                colors: ['#fa709a', '#fee140', '#ff9a9e', '#fecfef', '#fa709a']
+            },
+            forest: {
+                name: 'Forest Mist',
+                colors: ['#11998e', '#38ef7d', '#17ad37', '#64b3f4', '#11998e']
+            },
+            galaxy: {
+                name: 'Galaxy Night',
+                colors: ['#2c3e50', '#fd746c', '#ff9068', '#667eea', '#2c3e50']
+            },
+            neon: {
+                name: 'Neon Nights',
+                colors: ['#ff006e', '#fb5607', '#ffbe0b', '#8338ec', '#ff006e']
+            }
+        };
+
+        let currentTheme = 'aurora';
+        let isPaletteOpen = false;
 
         // Create floating particles
         function createParticles() {
@@ -936,6 +1281,10 @@
             // Clear existing particles
             container.innerHTML = '';
             
+            const currentColors = currentTheme ? colorThemes[currentTheme].colors : [
+                '#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe'
+            ];
+            
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
@@ -943,16 +1292,16 @@
                 particle.style.animationDelay = Math.random() * 8 + 's';
                 particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
                 
-                // Random particle colors
-                const colors = [
-                    'rgba(102, 126, 234, 0.8)',
-                    'rgba(240, 147, 251, 0.8)',
-                    'rgba(79, 172, 254, 0.8)',
-                    'rgba(245, 87, 108, 0.8)',
-                    'rgba(255, 255, 255, 0.6)'
-                ];
-                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-                particle.style.boxShadow = `0 0 6px ${colors[Math.floor(Math.random() * colors.length)]}`;
+                // Use theme colors for particles
+                const randomColor = currentColors[Math.floor(Math.random() * currentColors.length)];
+                const rgb = hexToRgb(randomColor);
+                if (rgb) {
+                    particle.style.background = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.8)`;
+                    particle.style.boxShadow = `0 0 6px rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.6)`;
+                } else {
+                    particle.style.background = 'rgba(255, 255, 255, 0.6)';
+                    particle.style.boxShadow = '0 0 6px rgba(255, 255, 255, 0.6)';
+                }
                 
                 container.appendChild(particle);
             }
@@ -960,6 +1309,116 @@
 
         // Initialize particles
         createParticles();
+
+        // Color palette functions
+        function toggleColorPalette() {
+            isPaletteOpen = !isPaletteOpen;
+            
+            if (isPaletteOpen) {
+                openColorPalette();
+            } else {
+                closeColorPalette();
+            }
+        }
+
+        function openColorPalette() {
+            colorPaletteMenu.classList.add('show');
+            paletteBackdrop.classList.add('show');
+            colorPaletteBtn.style.transform = 'scale(1.1) rotate(180deg)';
+            isPaletteOpen = true;
+        }
+
+        function closeColorPalette() {
+            colorPaletteMenu.classList.remove('show');
+            paletteBackdrop.classList.remove('show');
+            colorPaletteBtn.style.transform = 'scale(1) rotate(0deg)';
+            isPaletteOpen = false;
+        }
+
+        function changeTheme(themeName) {
+            if (!colorThemes[themeName]) return;
+            
+            const theme = colorThemes[themeName];
+            const root = document.documentElement;
+            
+            // Update CSS custom properties
+            root.style.setProperty('--bg-gradient-1', theme.colors[0]);
+            root.style.setProperty('--bg-gradient-2', theme.colors[1]);
+            root.style.setProperty('--bg-gradient-3', theme.colors[2]);
+            root.style.setProperty('--bg-gradient-4', theme.colors[3]);
+            root.style.setProperty('--bg-gradient-5', theme.colors[4]);
+            
+            // Update active state in menu
+            document.querySelectorAll('.palette-option').forEach(option => {
+                option.classList.remove('active');
+                if (option.dataset.theme === themeName) {
+                    option.classList.add('active');
+                }
+            });
+            
+            // Update glass orbs to match theme
+            updateGlassOrbColors(theme.colors);
+            
+            // Update particles to match theme
+            updateParticleColors(theme.colors);
+            
+            currentTheme = themeName;
+            
+            // Add visual feedback
+            colorPaletteBtn.style.transform = 'scale(1.2) rotate(360deg)';
+            setTimeout(() => {
+                colorPaletteBtn.style.transform = 'scale(1) rotate(0deg)';
+            }, 300);
+            
+            // Store preference
+            localStorage.setItem('keyChecker_theme', themeName);
+            
+            // Close palette after selection
+            setTimeout(() => {
+                closeColorPalette();
+            }, 800);
+        }
+
+        function updateGlassOrbColors(colors) {
+            const orbs = document.querySelectorAll('.glass-orb');
+            orbs.forEach((orb, index) => {
+                const colorIndex = index % colors.length;
+                const color = colors[colorIndex];
+                // Convert hex to rgba for transparency
+                const rgb = hexToRgb(color);
+                orb.style.background = `radial-gradient(circle, rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.3), transparent)`;
+            });
+        }
+
+        function updateParticleColors(colors) {
+            const particles = document.querySelectorAll('.particle');
+            particles.forEach(particle => {
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                const rgb = hexToRgb(randomColor);
+                particle.style.background = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.8)`;
+                particle.style.boxShadow = `0 0 6px rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.6)`;
+            });
+        }
+
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+
+        // Load saved theme on page load
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem('keyChecker_theme');
+            if (savedTheme && colorThemes[savedTheme]) {
+                changeTheme(savedTheme);
+            }
+        }
+
+        // Initialize saved theme
+        setTimeout(loadSavedTheme, 100);
 
         // Auto-check toggle functionality
         autoCheckToggle.addEventListener('change', (e) => {
@@ -1277,12 +1736,22 @@
                 keyInput.focus();
             }
             
-            // Escape to clear input
-            if (e.key === 'Escape' && document.activeElement === keyInput) {
-                keyInput.value = '';
-                resetStatus();
-                stopAutoCheck();
-                autoCheckToggle.checked = false;
+            // Escape to clear input or close palette
+            if (e.key === 'Escape') {
+                if (isPaletteOpen) {
+                    closeColorPalette();
+                } else if (document.activeElement === keyInput) {
+                    keyInput.value = '';
+                    resetStatus();
+                    stopAutoCheck();
+                    autoCheckToggle.checked = false;
+                }
+            }
+            
+            // Ctrl/Cmd + P to toggle color palette
+            if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+                e.preventDefault();
+                toggleColorPalette();
             }
         });
 
